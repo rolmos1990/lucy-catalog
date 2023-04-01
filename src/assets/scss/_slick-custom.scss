@@ -1,0 +1,259 @@
+// slick dot global custom css
+.slick-dots {
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin-top: 30px;
+    text-align: center;
+    li {
+        display: inline-flex;
+
+        button {
+            text-indent: -50000px;
+            width: 12px;
+            height: 12px;
+            margin: 0 5px;
+            border-radius: 50%;
+            border: 1px solid var(--red-one);
+            transition: all 0.3s ease-in-out;
+        }
+        &.slick-active button {
+            background: var(--red-one);
+        }
+    }
+}
+
+// slick long arrow default css
+.slick-long-arrow {
+    .slick-arrow {
+        font-size: 0;
+        line-height: 0.76;
+        position: absolute;
+        z-index: 1;
+
+        &:hover {
+            &::before {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        &::before {
+            font-family: bootstrap-icons;
+            border: none !important;
+            font-size: 35px;
+            width: 20px;
+            height: 20px;
+            color: var(--heading);
+            transition: all 0.3s ease-in-out;
+            transform: scale(0.7);
+            display: block;
+        }
+        &.slick-prev {
+            right: 24%;
+            &::before {
+                content: "\f12f";
+            }
+        }
+        &.slick-next {
+            &::before {
+                content: "\f138";
+            }
+        }
+    }
+}
+// if arrow bottom center
+.arrow-bottom-center {
+    .slick-arrow {
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 15px;
+
+        &.slick-prev {
+            right: 44%;
+            @media (max-width: 1600px) {
+                right: 43%;
+            }
+        }
+    }
+}
+
+// slick rounded arrow
+.slick-rounded-arrow {
+    .slick-arrow {
+        font-size: 0;
+        line-height: 0.76;
+        position: absolute;
+        z-index: 1;
+
+        &:hover {
+            &::before {
+                background: var(--red-one);
+                color: #fff;
+            }
+        }
+
+        &::before {
+            font-family: bootstrap-icons;
+            border: none !important;
+            font-size: 18px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #fff;
+            text-align: center;
+            line-height: 50px;
+            color: #2a2a2a;
+            transition: all 0.3s ease-in-out;
+            display: block;
+        }
+
+        &.slick-prev {
+            &::before {
+                content: "\f284";
+            }
+        }
+        &.slick-next {
+            &::before {
+                content: "\f285";
+            }
+        }
+    }
+}
+
+// if arrow top right
+.arrow-top-right {
+    .slick-arrow {
+        right: 14%;
+        top: -256px;
+
+        @media (max-width: 1360px) {
+            right: 8%;
+        }
+        @media (max-width: 1199px) {
+            top: -145px;
+            right: 4%;
+        }
+
+        &.slick-prev {
+            left: auto;
+            right: 18%;
+            @media (max-width: 1360px) {
+                right: 13%;
+            }
+            @media (max-width: 1199px) {
+                right: 10%;
+            }
+            @media (max-width: 991px) {
+                right: 11%;
+            }
+        }
+    }
+    &.exact {
+        .slick-arrow {
+            top: auto;
+            bottom: 120%;
+        }
+    }
+    &.exact-2 {
+        @extend .exact;
+        .slick-arrow {
+            bottom: 116%;
+        }
+    }
+    &.exact-3 {
+        @extend .exact;
+        .slick-arrow {
+            bottom: 110%;
+        }
+        @media (min-width: 1700px) {
+            &.ripple-btn .slick-arrow.slick-prev {
+                right: 18.5%;
+            }
+        }
+    }
+}
+
+// if arrow center
+.arrow-center {
+    .slick-arrow {
+        &.slick-next {
+            right: 0;
+        }
+    }
+}
+
+// ripple btn
+.slick-rounded-arrow.ripple-btn {
+    &.is_dark {
+        .slick-arrow {
+            &::before {
+                background: rgba(255, 255, 255, 0.2);
+                color: #fff;
+            }
+            &:hover {
+                &::before {
+                    background: rgba(255, 255, 255, 0.3);
+                }
+            }
+        }
+    }
+    &.is_light {
+        .slick-arrow {
+            &::before {
+                background: rgba(0, 0, 0, 0.1);
+                color: var(--heading);
+            }
+            &:hover {
+                &::before {
+                    background: rgba(0, 0, 0, 1);
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+.ripple-btn {
+    .slick-arrow {
+        &.slick-prev {
+            @media (min-width: 1700px) {
+                right: 17.5%;
+            }
+            &::before {
+                content: "\f12f";
+            }
+        }
+        &.slick-next {
+            &::before {
+                content: "\f138";
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: 60%;
+            top: 60%;
+            margin: -40px 0 0 -40px;
+            transform: scale(0);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        &:hover {
+            &::after {
+                transform: scale(1);
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
+            }
+        }
+    }
+}
+
+.arrow-none {
+    .slick-arrow {
+        display: none !important;
+    }
+}
