@@ -1,4 +1,4 @@
-Lucy Catalog Project 
+Lucy Catalog Project 2
 
 # Getting Started with Create React App
 
