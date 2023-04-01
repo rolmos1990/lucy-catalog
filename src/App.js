@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import {Navigate} from "react-router";
 import { store } from "./redux/store";
 
-// All Elements  dropdown Menu inner pages
+// All Elements  dropdown Menu inner pages add comment
 import ScrollTopBehaviour from "./components/elements/ScrollTopBehaviour";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/new/home";
