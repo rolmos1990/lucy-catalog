@@ -58,12 +58,6 @@ jobs:
           SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.AWS_HOST }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: AWS_PRIVATE_KEY
-          path: test.key
-
       #- name: Stop the server
       - uses: benjlevesque/short-sha@v1.2
       - name: Deploy in Cluster
