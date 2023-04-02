@@ -65,6 +65,6 @@ jobs:
           DOCKER_TAG: ${{ steps.short-sha.outputs.sha }}
           SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
         run: |
-          ssh staging "cd /var/apps/catalog && docker-compose stop"
-          ssh staging "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose pull"
-          ssh staging "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose up -d"
+          ssh catalogkey "cd /var/apps/catalog && docker-compose stop"
+          ssh catalogkey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose pull"
+          ssh catalogkey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose up -d"
