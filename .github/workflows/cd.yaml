@@ -44,17 +44,15 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
+          echo "$SSH_KEY" > ~/.ssh/catalogkey.key
+          chmod 600 ~/.ssh/catalogkey.key
           cat >>~/.ssh/config <<END
-          Host staging
+          Host apikey
             HostName $SSH_HOST
             User $SSH_USER
-            IdentityFile ~/.ssh/staging.key
-            UserKnownHostsFile ~/.ssh/known_hosts
+            IdentityFile ~/.ssh/catalogkey.key
             StrictHostKeyChecking no
           END
-          echo "$SSH_KEY" > test.key
         env:
           SSH_USER: ${{ secrets.AWS_USERNAME }}
           SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
