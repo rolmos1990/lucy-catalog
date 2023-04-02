@@ -44,13 +44,13 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/catalogkey.key
-          chmod 600 ~/.ssh/catalogkey.key
+          echo "$SSH_KEY" > ~/.ssh/apikey.key
+          chmod 600 ~/.ssh/apikey.key
           cat >>~/.ssh/config <<END
-          Host catalogkey
+          Host apikey
             HostName $SSH_HOST
             User $SSH_USER
-            IdentityFile ~/.ssh/catalogkey.key
+            IdentityFile ~/.ssh/apikey.key
             StrictHostKeyChecking no
           END
         env:
@@ -65,6 +65,6 @@ jobs:
           DOCKER_TAG: ${{ steps.short-sha.outputs.sha }}
           SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
         run: |
-          ssh catalogkey "cd /var/apps/catalog && docker-compose stop"
-          ssh catalogkey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose pull"
-          ssh catalogkey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose up -d"
+          ssh apikey "cd /var/apps/catalog && docker-compose stop"
+          ssh apikey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose pull"
+          ssh apikey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose up -d"
