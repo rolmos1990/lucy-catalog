@@ -51,6 +51,7 @@ jobs:
             HostName $SSH_HOST
             User $SSH_USER
             IdentityFile ~/.ssh/staging.key
+            UserKnownHostsFile ~/.ssh/known_hosts
             StrictHostKeyChecking no
           END
           echo "$SSH_KEY" > test.key
