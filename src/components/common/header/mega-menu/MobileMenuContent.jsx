@@ -14,7 +14,7 @@ const MobileMenuContent = () => {
     <>
       <hr />
       <div className="address-block">
-        <h4 className="title">Estas siendo atendido por:</h4>
+        <h4 className="title">Número de Contacto:</h4>
         <p>
           <img src="https://www.freepnglogos.com/uploads/whatsapp-logo-png-hd-2.png" style={{height:"40px", display: 'inline'}}/> {selectedWhatsapp} <br />
         </p>

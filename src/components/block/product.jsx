@@ -61,7 +61,7 @@ const BlockProduct = ({getProduct, item}) => {
         <>
             {item.video && (
                 <ModalVideo
-                    channel="youtube"
+                    channel="vimeo"
                     autoplay
                     isOpen={open}
                     videoId={item.video}
@@ -70,7 +70,7 @@ const BlockProduct = ({getProduct, item}) => {
             )}
 
         <div style={{"display": "flex", "justifyContent":"center","alignItems": "center"}}>
-            <div className="btn-actions-product animation-right-left">
+            <div className={productdata && productdata.template === 5 ? "btn-actions-product-left animation-right-left" : "btn-actions-product animation-right-left"}>
                 <Link to={getUrlWhatsapp()} params={{}} target="_blank">
                     <div className="btn-request">
                         <img src={whatsappCapa} style={{height: "50px"}}/>
