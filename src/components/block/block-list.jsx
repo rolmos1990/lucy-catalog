@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { Link } from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import useCategory from "../../hooks/use-category";
 import {connect} from "react-redux";
 import {clear_category, retrieveCategory} from "../../redux/features/category-slice";
@@ -14,10 +14,16 @@ const CategoryList = ({items, retrieveCategory, clear_category, clear_product}) 
     const { ws, categories  } = useCategory(items, retrieveCategory);
     const portfolioContent = categories;
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         clear_category();
         clear_product();
     }, []);
+
+    const goToNext = (route) => {
+        navigate(route);
+    }
 
     return (
         <>
@@ -26,7 +32,7 @@ const CategoryList = ({items, retrieveCategory, clear_category, clear_product}) 
                             <div className="col-xxl-11 m-auto">
                                 <div className="mixitUp-container clearfix">
                                     {item.items.map((value, index) => (
-                                        <div className="mix" key={value.id} data-aos="fade-right">
+                                        <div className="mix" key={value.id} onClick={() => goToNext(value.route)} data-aos="fade-right">
                                             <div className="case-block-three position-relative animate__animated animate__fadeIn" style={{'animationDelay': `${((index + 1) * delay)}ms`}}>
                                                 <ImageItem
                                                     src={value.img || defaultImageCategory}
