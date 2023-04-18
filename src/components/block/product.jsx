@@ -3,9 +3,9 @@ import React, {useEffect, useState} from "react";
 import whatsappCapa from "../../assets/images/media/whatsapp_pedi.png";
 import videoPlayPng from "../../assets/images/media/video_play.png";
 import {connect} from "react-redux";
-import {clear_product, getProduct, retrieveProduct} from "../../redux/features/product-slice";
+import {getProduct} from "../../redux/features/product-slice";
 import {useParams} from "react-router";
-import {_decodePhone, getBaseService, getImage, getTemplateUrlService} from "../../utils/helpers";
+import {_decodePhone, getImage, getTemplateUrlService} from "../../utils/helpers";
 import ModalVideo from "react-modal-video";
 import {connection} from "../../api/connection";
 import Mustache from 'mustache/mustache';
@@ -53,8 +53,8 @@ const BlockProduct = ({getProduct, item}) => {
         backgroundImage: "url(" + getImage(item.catalogUrl) + ")",
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
-        height: window.screen.height - 120,
-        width: 'auto'
+        width: window.screen.width,
+        height: 'auto'
     };
 
     return (
@@ -83,7 +83,7 @@ const BlockProduct = ({getProduct, item}) => {
                 )}
             </div>
             <div style={sectionStyle}>&nbsp;
-                <img src={getImage(item.catalogUrl)} style={{visibility:'hidden', height: window.screen.height - 120, width: 'auto'}} />
+                <img src={getImage(item.catalogUrl)} style={{visibility:'hidden', height: 'auto', width: window.screen.width}} />
             </div>
         </div>
         </>
