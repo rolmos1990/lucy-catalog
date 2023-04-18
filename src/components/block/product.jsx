@@ -82,8 +82,8 @@ const BlockProduct = ({getProduct, item}) => {
                     </div>
                 )}
             </div>
-            <div style={sectionStyle}>&nbsp;
-                <img src={getImage(item.catalogUrl)} style={{visibility:'hidden', height: 'auto', width: window.screen.width}} />
+            <div>
+                <img src={getImage(item.catalogUrl)} style={{height: 'auto', width: window.screen.width}} />
             </div>
         </div>
         </>
