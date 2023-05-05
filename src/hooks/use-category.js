@@ -21,7 +21,7 @@ const useCategory = (items, getAll) => {
     const getAdaptorCategory = (allCategories) => {
         if(allCategories.length > 0){
             //img1
-            const _categories = allCategories.map(_item => ({
+            const _categories = allCategories.filter(_it => _it.status > 0).map(_item => ({
                 id: _item.id,
                 title: _item.name,
                 img: _item['filenameCatalog'] ? getBaseService() + '/uploads/categories/' + _item['filenameCatalog'] : img1,
