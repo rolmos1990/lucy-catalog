@@ -18,6 +18,8 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
     const scroll = useRef(null);
     let [reset, setReset] = useState(false);
     let [hasMore, setHasMore] = useState(true);
+    let [lastItemIndex, setLastItemIndex] = useState(0);
+    let [paginations, setPaginations] = useState([]);
 
     useEffect(() => {
         setLoading(true);
@@ -67,11 +69,19 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
             }
 
             //img1
+
+            function getImageGroup(_item) {
+                const imageGet = (_item.productImage.filter(_p => _p.group == 1))[0];
+                return imageGet;
+            }
+
+            allProducts = allProducts.filter(_productItem => parseInt(_productItem.productAvailable.available) > 0);
+
             const _products = allProducts.map(_item => ({
                 id: _item.id,
                 title: _item.name,
                 description: _item.description,
-                img: getImageByQuality(_item.productImage[0], 'medium'),
+                img: getImageByQuality(getImageGroup(_item), 'medium'),
                 reference: _item.reference,
                 price: productPriceWithDiscount(_item),
                 priceClear: _item.price,
@@ -94,10 +104,10 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
             setLoading(true );
             const offset = (page - 1) * 10;
             const res = await ProductDataService.getAll(category, 10, offset);
-            if(res.data.data.length >= 0){
+            if(res.data.data.length >= 0) {
                 const _data = res.data.data;
                 const _meta = res.data.meta;
-                if(_meta.totalRegisters > offset + 10){
+                if (_meta.totalRegisters > offset + 10) {
                     setHasMore(true);
                     setLoading(false);
                 } else {
@@ -105,13 +115,16 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
                     setLoading(false);
                 }
 
-                const formatted = getConverterArrayPortfolio(getAdaptorProducts(_data));
-                const newList = list.concat(formatted);
+                //const formatted = getConverterArrayPortfolio(getAdaptorProducts(_data));
+                const newList = list.concat(getAdaptorProducts(_data));
                 setList(newList);
+
+                //const formattedAllList = getConverterArrayPortfolio(newList);
+                //setList(formattedAllList);
             }
         }catch(e){
             setLoading(false);
-            console.log('no se pudo obtener registros...');
+            console.log('no se pudo obtener registros...', e.message);
         }
     }
 
@@ -151,33 +164,46 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
         </div>
         </div></Link>;
 
-    return (
-        <InfiniteScroll
-            ref={scroll}
-            pageStart={1}
-            loadMore={getMore}
-            threshold={0}
-            initialLoad={true}
-            hasMore={!loading && hasMore}
-            loader={<h3 className="loader text-muted text-center" key={0}> ... </h3>}
-        >
-            <div className="container-fluid">
-                {list && list.map((item,index) => (
-                    <>
-                    <div className="d-flex justify-content-center" style={{'width': '100%'}}>
-                        <div className="column" style={{'margin': '0.5em', width: mediaQueryBig? '450px' : (mediaQuerySmall ? '50%' : '35%')}}>
-                            {item[0] && renderItem(item[0], index)}
-                        </div>
-                        <div className="column" style={{'margin': '0.5em', width: mediaQueryBig? '450px' : (mediaQuerySmall ? '50%' : '35%')}}>
-                            {item[1] && renderItem(item[1], index)}
-                        </div>
-                    </div>
-                    <div className="divider"><div className="icon">&nbsp;</div></div>
-                    </>
-                ))}
-            </div>
-        </InfiniteScroll>
-    );
+    if(paginations) {
+        return (
+            <InfiniteScroll
+                ref={scroll}
+                pageStart={1}
+                loadMore={getMore}
+                threshold={0}
+                initialLoad={true}
+                hasMore={!loading && hasMore}
+                loader={<h3 className="loader text-muted text-center" key={0}> ... </h3>}
+            >
+                <div className="container-fluid">
+                    {list && getConverterArrayPortfolio(list).map((item, index) => (
+                        <>
+                            <div className="d-flex justify-content-center" style={{'width': '100%'}}>
+                                <div className="column" style={{
+                                    'margin': '0.5em',
+                                    width: mediaQueryBig ? '450px' : (mediaQuerySmall ? '50%' : '35%')
+                                }}>
+                                    {item[0] && renderItem(item[0], index)}
+                                </div>
+                                <div className="column" style={{
+                                    'margin': '0.5em',
+                                    width: mediaQueryBig ? '450px' : (mediaQuerySmall ? '50%' : '35%')
+                                }}>
+                                    {item[1] && renderItem(item[1], index)}
+                                </div>
+                            </div>
+                            <div className="divider">
+                                <div className="icon">&nbsp;</div>
+                            </div>
+                        </>
+                    ))}
+                </div>
+            </InfiniteScroll>
+        );
+
+    } else {
+        return;
+    }
 };
 const mapStateToProps = (state) => {
     return {

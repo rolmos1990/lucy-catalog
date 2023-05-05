@@ -32,7 +32,7 @@ const CategoryList = ({items, retrieveCategory, clear_category, clear_product}) 
                             <div className="col-xxl-11 m-auto">
                                 <div className="mixitUp-container clearfix">
                                     {item.items.map((value, index) => (
-                                        <div className="mix" key={value.id} onClick={() => goToNext(value.route)} data-aos="fade-right">
+                                        <div className="mix" style={{"width": "50%"}} key={value.id} onClick={() => goToNext(value.route)} data-aos="fade-right">
                                             <div className="case-block-three position-relative animate__animated animate__fadeIn" style={{'animationDelay': `${((index + 1) * delay)}ms`}}>
                                                 <ImageItem
                                                     src={value.img || defaultImageCategory}

@@ -31,7 +31,7 @@ const SidebarHeader = () => {
         aria-label="Close"
         style={{
             "position": "relative",
-            "left": "400px"
+            "right": "0px"
         }}
       >
         <i className="bi bi-x-lg"></i>

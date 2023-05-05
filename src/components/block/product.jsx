@@ -61,9 +61,10 @@ const BlockProduct = ({getProduct, item}) => {
         <>
             {item.video && (
                 <ModalVideo
-                    channel="vimeo"
+                    channel="custom"
                     autoplay
                     isOpen={open}
+                    url={"https://api.vadoo.tv/landing_page?vid=" + item.video}
                     videoId={item.video}
                     onClose={() => setOpen(false)}
                 />
