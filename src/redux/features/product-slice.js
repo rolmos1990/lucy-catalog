@@ -4,14 +4,17 @@ import ProductDataService from "../services/product.service";
 const initialState = {
   loading: false,
   items: [],
-  item: null
+  item: null,
+  meta: {},
+  offset: -1,
+  reset: false
 };
 
 export const retrieveProduct = createAsyncThunk(
     "product/retrieve",
     async ({category, limit, page}) => {
       const res = await ProductDataService.getAll(category, limit, page);
-      return res.data.data;
+      return {data: res.data.data, meta: res.data.meta};
     }
 );
 
@@ -31,6 +34,22 @@ const productSlice = createSlice({
     clear_product: (state) => {
       state.item = null;
     },
+    clear_products: (state) => {
+      state.item = null;
+      state.items = [];
+      state.scroll = 0;
+      state.loading = false;
+      state.meta = {};
+      state.reset = !state.reset;
+      state.offset = -1;
+    },
+    set_offset: (state, action) => {
+      state.offset = action.payload.offset;
+    },
+    scroll_saved: (state, action) => {
+      console.log('saved scroll: ', action.payload.scroll);
+      state.scroll = action.payload.scroll;
+    },
   },
   extraReducers: {
     [retrieveProduct.pending]: (state, action) => {
@@ -38,7 +57,8 @@ const productSlice = createSlice({
     },
     [retrieveProduct.fulfilled]: (state, action) => {
       state.loading = false;
-      state.items = [...state.items, ...action.payload];
+      state.items = [...state.items, ...action.payload.data];
+      state.meta = action.payload.meta;
     },
     [retrieveProduct.rejected]: (state, action) => {
       state.loading = false;
@@ -56,6 +76,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { clear_product } = productSlice.actions;
+export const { clear_product, set_offset, scroll_saved, clear_products } = productSlice.actions;
 
 export default productSlice.reducer;

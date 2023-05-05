@@ -4,9 +4,10 @@ import SidebarMenu from "./SidebarMenu";
 import SidebarFooter from "./SidebarFooter";
 import {connect} from "react-redux";
 import {retrieveCategory} from "../../../../redux/features/category-slice";
+import {clear_products} from "../../../../redux/features/product-slice";
 import useCategory from "../../../../hooks/use-category";
 
-const Sidebar = ({ className = "", items, retrieveCategory }) => {
+const Sidebar = ({ className = "", items, retrieveCategory, clear_products }) => {
 
   const { ws, categories  } = useCategory(items, retrieveCategory);
 
@@ -22,7 +23,7 @@ const Sidebar = ({ className = "", items, retrieveCategory }) => {
 
       <div className="sidebar-nav-item">
         {categories && categories.length > 0 && (
-            <SidebarMenu items={categories} />
+            <SidebarMenu items={categories} onClose={clear_products} />
         )}
       </div>
       {/* End .sidebar-nav-item */}
@@ -40,4 +41,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default (connect(mapStateToProps, { retrieveCategory })(Sidebar));
+export default (connect(mapStateToProps, { retrieveCategory, clear_products })(Sidebar));

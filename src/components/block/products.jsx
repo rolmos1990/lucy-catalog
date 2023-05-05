@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import {clear_product, retrieveProduct} from "../../redux/features/product-slice";
+import {clear_product, retrieveProduct, set_offset, scroll_saved} from "../../redux/features/product-slice";
 import {connect} from "react-redux";
 import InfiniteScroll from 'react-infinite-scroller';
 import {useParams} from "react-router";
@@ -10,36 +10,31 @@ import {getImageByQuality, productPriceWithDiscount} from "../../utils/helpers";
 import {Link} from "react-router-dom";
 import {ImageItem} from "../image/ImageItem";
 
-const ProductList = ({clear_product, getCategory, clear_category}) => {
+const ProductList = ({clear_product, getCategory, clear_category, items, retrieveProduct, meta, set_offset, offset, scroll_saved, scrollSaved, reset}) => {
 
     let { ws, category } = useParams();
     let [list, setList] = useState([]);
     let [loading, setLoading] = useState(false);
     const scroll = useRef(null);
-    let [reset, setReset] = useState(false);
     let [hasMore, setHasMore] = useState(true);
-    let [lastItemIndex, setLastItemIndex] = useState(0);
     let [paginations, setPaginations] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
-        setHasMore(true);
-
-        clear_product();
+        console.log('reset...');
         setList([]);
-        scroll.current.pageLoaded = 1;
-        setReset(!reset);
-    }, [category]);
-
-    useEffect(() => {
-        getMore();
+        setHasMore(true);
+        getMore(1);
     }, [reset]);
 
-
-
     useEffect(() => {
-        clear_product();
+        console.log('clear all products..');
+        //clear_product();
         getCategory({category});
+
+        setTimeout(function() {
+            window.scrollTo(0, scrollSaved);
+        }, 2500);
+
     }, []);
 
     const getConverterArrayPortfolio = (portfolioContent) => {
@@ -76,6 +71,7 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
             }
 
             allProducts = allProducts.filter(_productItem => parseInt(_productItem.productAvailable.available) > 0);
+            allProducts = allProducts.filter(_productItem => (_productItem.productImage && _productItem.productImage.length > 0));
 
             const _products = allProducts.map(_item => ({
                 id: _item.id,
@@ -98,43 +94,54 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
         }
     }
 
-    const getMore = async (page = 1) => {
-        //get more items
-        try {
-            setLoading(true );
-            const offset = (page - 1) * 10;
-            const res = await ProductDataService.getAll(category, 10, offset);
-            if(res.data.data.length >= 0) {
-                const _data = res.data.data;
-                const _meta = res.data.meta;
-                if (_meta.totalRegisters > offset + 10) {
+    useEffect(() => {
+
+        const offsetIncrement = 10;
+        if(items.length >= 0) {
+                const _data = items;
+                const _meta = meta;
+                if (items.length + offsetIncrement < _meta.totalRegisters) {
                     setHasMore(true);
                     setLoading(false);
                 } else {
                     setHasMore(false);
                     setLoading(false);
                 }
+                setList(getAdaptorProducts(_data));
+        }
+    }, [items]);
 
-                //const formatted = getConverterArrayPortfolio(getAdaptorProducts(_data));
-                const newList = list.concat(getAdaptorProducts(_data));
-                setList(newList);
+    const getMore = (page = 1) => {
+        //get more items
+        try {
+            const _offset = (page - 1) * 10;
+            if(_offset > offset) {
+                setLoading(true);
+                set_offset({offset: _offset});
 
-                //const formattedAllList = getConverterArrayPortfolio(newList);
-                //setList(formattedAllList);
+                retrieveProduct({category, limit: 10, page: _offset});
             }
         }catch(e){
+
+            console.log('error: ', e.message);
             setLoading(false);
-            console.log('no se pudo obtener registros...', e.message);
         }
     }
 
-    const delay = 100;
+    const delay = 50;
 
     const mediaQuerySmall = window.matchMedia('(min-width: 768px)');
     const mediaQueryBig = window.matchMedia('(min-width: 868px)');
 
+    const saveScrollPosition = () => {
+        const position = window.pageYOffset;
+        console.log('scroll position: ', position);
+        scroll_saved({scroll: position})
+    }
+
     const renderItem = (_item, _index) =>
         <Link
+            onClick={saveScrollPosition}
             to={_item.route}
             className="d-flex justify-content-between align-items-center"
         >
@@ -168,7 +175,7 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
         return (
             <InfiniteScroll
                 ref={scroll}
-                pageStart={1}
+                pageStart={0}
                 loadMore={getMore}
                 threshold={0}
                 initialLoad={true}
@@ -208,9 +215,13 @@ const ProductList = ({clear_product, getCategory, clear_category}) => {
 const mapStateToProps = (state) => {
     return {
         items: state.products.items,
-        categoryData: state.category.item
+        meta: state.products.meta,
+        categoryData: state.category.item,
+        offset: state.products.offset,
+        scrollSaved: state.products.scroll,
+        reset: state.products.reset
     };
 };
 
-export default connect(mapStateToProps, { retrieveProduct, getCategory, clear_product, clear_category })(ProductList);
+export default connect(mapStateToProps, { retrieveProduct, getCategory, clear_product, clear_category, set_offset, scroll_saved })(ProductList);
 //export default ProductList;

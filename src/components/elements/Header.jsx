@@ -5,9 +5,9 @@ import logoShort from "../../assets/images/logo/lucymodas-logo-short-white.png";
 import {useParams, useNavigate} from "react-router";
 import {connect} from "react-redux";
 import {clear_category} from "../../redux/features/category-slice";
-import {clear_product} from "../../redux/features/product-slice";
+import {clear_product, clear_products} from "../../redux/features/product-slice";
 
-const Header = ({productData, categoryData, clear_category, clear_product}) => {
+const Header = ({productData, categoryData, clear_category, clear_product, clear_products}) => {
   const [navbar, setNavbar] = useState(false);
 
   const navigate = useNavigate();
@@ -25,18 +25,14 @@ const Header = ({productData, categoryData, clear_category, clear_product}) => {
   let { product } = useParams();
 
   const getProductBack = () => {
-
-    clear_category();
-    clear_product();
-
-    return navigate(`/${ws}/${category}/products`);
+    return navigate(-1);
   }
 
   const getCategoryBack = () => {
-
+    console.log('go back category...');
     clear_category();
     clear_product();
-
+    clear_products();
     return navigate(`/${ws}`);
   }
 
@@ -123,4 +119,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, {clear_category, clear_product})(Header);
+export default connect(mapStateToProps, {clear_category, clear_product, clear_products})(Header);
