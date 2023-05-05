@@ -6,7 +6,6 @@ import {connect} from "react-redux";
 import {getProduct} from "../../redux/features/product-slice";
 import {useParams} from "react-router";
 import {_decodePhone, getImage, getTemplateUrlService} from "../../utils/helpers";
-import ModalVideo from "react-modal-video";
 import {connection} from "../../api/connection";
 import Mustache from 'mustache/mustache';
 import {Link} from "react-router-dom";
@@ -57,17 +56,56 @@ const BlockProduct = ({getProduct, item}) => {
         height: 'auto'
     };
 
+    const openModal = () => {
+        window.scrollTo(0, 0);
+        setOpen(true);
+    }
+
     return (
         <>
             {item.video && (
-                <ModalVideo
-                    channel="custom"
-                    autoplay
-                    isOpen={open}
-                    url={"https://api.vadoo.tv/landing_page?vid=" + item.video}
-                    videoId={item.video}
-                    onClose={() => setOpen(false)}
-                />
+                <div className={ "position-absolute " + (open ? 'animate__animated animate__fadeIn' : 'fade d-none') }  style={{"zIndex": 10000, height: '100%', width: '100%', backgroundColor: 'white', overflow: 'hidden'}} >
+                    <div style={{"position": "relative"}}>
+                    <button onClick={() => setOpen(false)} type="button" className="close-btn tran3s" data-bs-dismiss="offcanvas" aria-label="Close"
+                            style={{"position": "relative", "left": "20px"}}><i className="bi bi-x-lg"></i></button>
+                    <div style={{
+                        "left": "0",
+                        "width": "100%",
+                        "height": "0",
+                        "position": "relative",
+                        "paddingBottom": "177.78%"
+                    }}>
+                        <figure
+                            style={{
+                                "left": "0%",
+                                "width": "90%",
+                                "height": "0",
+                                "position": "relative",
+                                "paddingBottom": "177.78%",
+                                "marginBlockEnd": "0",
+                                "marginBlockStart": "0",
+                                "marginInlineStart": "0",
+                                "marginInlineEnd": "0"}}>
+                            <iframe src={"https://api.vadoo.tv/iframe_test?id=" + item.video}
+                                    scrolling="no"
+                                    style={{
+                                        "border": "0",
+                                        "top":"0",
+                                        "left": "8%",
+                                        "width": "90%",
+                                        "height": "70%",
+                                        "position": "absolute",
+                                        "overflow":"hidden",
+                                        "borderRadius": "5px"
+                                    }}
+                                    allowFullScreen="1"
+                                    allow="autoplay"
+                            >
+                            </iframe>
+                        </figure>
+                    </div>
+                    </div>
+                </div>
             )}
 
         <div style={{"display": "flex", "justifyContent":"center","alignItems": "center"}}>
@@ -78,7 +116,7 @@ const BlockProduct = ({getProduct, item}) => {
                     </div>
                 </Link>
                 {item.video && (
-                    <div className="btn-request" onClick={() => setOpen(true)}>
+                    <div className="btn-request" onClick={openModal}>
                         <img src={videoPlayPng} style={{height: "55px"}}/>
                     </div>
                 )}
