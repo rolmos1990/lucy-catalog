@@ -33,7 +33,7 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
 
         setTimeout(function() {
             window.scrollTo(0, scrollSaved);
-        }, 2500);
+        }, 500);
 
     }, []);
 
