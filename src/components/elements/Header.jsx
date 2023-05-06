@@ -25,6 +25,7 @@ const Header = ({productData, categoryData, clear_category, clear_product, clear
   let { product } = useParams();
 
   const getProductBack = () => {
+    clear_product();
     return navigate(-1);
   }
 

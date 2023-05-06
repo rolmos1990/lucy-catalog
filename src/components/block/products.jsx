@@ -17,23 +17,20 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
     let [loading, setLoading] = useState(false);
     const scroll = useRef(null);
     let [hasMore, setHasMore] = useState(true);
-    let [paginations, setPaginations] = useState([]);
 
     useEffect(() => {
-        console.log('reset...');
         setList([]);
         setHasMore(true);
+        setLoading(false);
         getMore(1);
     }, [reset]);
 
     useEffect(() => {
-        console.log('clear all products..');
-        //clear_product();
         getCategory({category});
 
         setTimeout(function() {
             window.scrollTo(0, scrollSaved);
-        }, 1500);
+        }, 1600);
 
     }, []);
 
@@ -100,35 +97,40 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
         if(items.length >= 0) {
                 const _data = items;
                 const _meta = meta;
+
                 if (items.length + offsetIncrement < _meta.totalRegisters) {
                     setHasMore(true);
-                    setLoading(false);
                 } else {
                     setHasMore(false);
-                    setLoading(false);
                 }
+
                 setList(getAdaptorProducts(_data));
+                setLoading(false);
         }
     }, [items]);
 
     const getMore = (page = 1) => {
-        //get more items
-        try {
-            const _offset = (page - 1) * 10;
-            if(_offset > offset) {
-                setLoading(true);
-                set_offset({offset: _offset});
 
-                retrieveProduct({category, limit: 10, page: _offset});
+        if(meta && meta.totalRegisters <=  (items.length)){
+            return;
+        }
+
+        if(!loading) {
+            setLoading(true);
+            //get more items
+            try {
+                const _offset = (page - 1) * 10;
+                if (_offset > offset) {
+                    set_offset({offset: _offset});
+                    retrieveProduct({category, limit: 10, page: _offset});
+                }
+            } catch (e) {
+                setLoading(false);
             }
-        }catch(e){
-
-            console.log('error: ', e.message);
-            setLoading(false);
         }
     }
 
-    const delay = 50;
+    const delay = 20;
 
     const mediaQuerySmall = window.matchMedia('(min-width: 768px)');
     const mediaQueryBig = window.matchMedia('(min-width: 868px)');
@@ -170,12 +172,10 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
             </div>
         </div>
         </div></Link>;
-
-    if(paginations) {
         return (
             <InfiniteScroll
                 ref={scroll}
-                pageStart={0}
+                pageStart={parseInt(offset / 10)}
                 loadMore={getMore}
                 threshold={0}
                 initialLoad={true}
@@ -207,10 +207,6 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
                 </div>
             </InfiniteScroll>
         );
-
-    } else {
-        return;
-    }
 };
 const mapStateToProps = (state) => {
     return {
