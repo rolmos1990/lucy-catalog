@@ -30,7 +30,7 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
 
         setTimeout(function() {
             window.scrollTo(0, scrollSaved);
-        }, 1600);
+        }, 2400);
 
     }, []);
 
@@ -160,7 +160,7 @@ const ProductList = ({clear_product, getCategory, clear_category, items, retriev
         </div>
         <div style={{'display': 'flex', 'flexDirection': 'row', 'justifyContent': 'space-between', 'margin': '5px 0px'}}>
             <div>
-                <h6>{_item.category}</h6>
+                <h6>{_item.description}</h6>
                 <h5 className="text-lucy-primary" style={{'font-size': mediaQuerySmall ? '14px' : '20px'}}>{_item.reference}</h5>
             </div>
             <div className="currency">
