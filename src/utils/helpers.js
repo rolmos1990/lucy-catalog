@@ -23,11 +23,11 @@ const numberWithCommas =(x) =>{
 }
 
 export const getBaseService = () => {
-    return process.env.REACT_APP_BASE_SERVICE_URL;
+    return window.location.protocol + "://" + process.env.REACT_APP_BASE_SERVICE_URL;
 }
 
 export const getTemplateUrlService = () => {
-    return process.env.REACT_APP_BASE_SERVICE_URL + '/template/38';
+    return window.location.protocol + "://" +process.env.REACT_APP_BASE_SERVICE_URL + '/template/38';
 }
 
 export const getTestImageBaseService = () => {
@@ -36,7 +36,7 @@ export const getTestImageBaseService = () => {
 }
 
 export const getImage = (relativePath) => {
-    return process.env.REACT_APP_BASE_SERVICE_URL + '/' + relativePath;
+    return window.location.protocol + "://" +process.env.REACT_APP_BASE_SERVICE_URL + '/' + relativePath;
 }
 
 export const getMoment =() =>{
