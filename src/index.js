@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== "development") {
 } else {
     console.log('#############');
     console.log('Catalog Lucy Modas ....');
-    console.log('HOST:  ....', process.env.REACT_APP_BASE_SERVICE_URL);
+    console.log('HOST :  ....', process.env.REACT_APP_BASE_SERVICE_URL);
     console.log('############');
 }
 
