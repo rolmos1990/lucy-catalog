@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
 
     env:
       SOURCE_DIR: "build/"
@@ -25,7 +25,7 @@ jobs:
       - name: Build
         uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
       - run: git config --global url."https://".insteadOf git://
       - run: yarn
       - run: REACT_APP_ENV=production yarn build
@@ -65,6 +65,6 @@ jobs:
           DOCKER_TAG: ${{ steps.short-sha.outputs.sha }}
           SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
         run: |
-          ssh apikey "cd /var/apps/catalog && docker-compose stop"
-          ssh apikey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose pull"
-          ssh apikey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose up -d"
+          ssh catalogkey "cd /var/apps/catalog && docker-compose stop"
+          ssh catalogkey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose pull"
+          ssh catalogkey "cd /var/apps/catalog && APP_VERSION=0.1-$SHA docker-compose up -d"
